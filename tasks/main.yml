@@ -1,0 +1,34 @@
+---
+# code: language=ansible
+# tasks file for autofs
+
+- name: Install autofs
+  become: true
+  ansible.builtin.apt: 
+    pkg: 
+      - autofs
+    update_cache: true
+
+- name: Add mountpoints to master map
+  become: true
+  ansible.builtin.lineinfile:
+    path: /etc/auto.master
+    line: "\
+      {{ box.folder | default('/mnt') }} /etc/autofs.{{ box.name | default(ix) }} \
+      {{ box.options | default() }}"
+  loop: "{{ boxes }}"
+  loop_control:
+    loop_var: box
+    index_var: ix
+
+- name: Setup mountpoint files
+  become: true
+  ansible.builtin.template:
+    src: auto.template.j2
+    dest: /etc/autofs.{{box.name | default(ix)}}
+    mode: 0644
+  loop: "{{ boxes }}"
+  loop_control:
+    loop_var: box
+    index_var: ix
+  notify: Restart autofs service

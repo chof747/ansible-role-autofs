@@ -1,0 +1,29 @@
+---
+- name: Converge
+  hosts: all
+  vars:
+    boxes:
+      - box: fb.local
+        name: fotobook
+        folder: /mnt/fotobook
+        fstype: nfs4
+        options: "--timeout 15 browse"
+        mountpoints:
+        - source: fotos
+          target: Bilder
+        - source: shares
+          target: share
+        - source: library
+          target: Buecher
+          mods: r 
+      - box: nas.local
+        name: nas
+        fstype: nfs4
+        mountpoints:
+        - source: backup
+          target: Sicherung
+  tasks:
+    - name: "Include chof.autofs"
+      include_role:
+        name: "chof.autofs"
+   

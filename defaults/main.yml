@@ -1,0 +1,21 @@
+---
+# defaults file for autofs
+boxes:
+  box1:
+    box: fb.local
+    fstype: nfs4
+    mountpoints:
+    - source: fotos
+      target: Bilder
+    - source: shares
+      target: share
+    - source: library
+      target: Buecher
+      mods: r 
+  box2:
+    box: nas.local
+    fstype: nfs4
+    mountpoints:
+    - source: backup
+      target: Sicherung
+  

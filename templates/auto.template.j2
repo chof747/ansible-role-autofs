@@ -1,0 +1,3 @@
+{% for mp in box.mountpoints %}
+{{mp.target}} -fstype={{box.fstype}}nfs4,{{mp.mods|default("rw")}} {{box.box}}:/{{mp.source}}
+{% endfor %}
