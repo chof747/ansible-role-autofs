@@ -1,6 +1,7 @@
 ---
 # handlers file for autofs
 - name: Restart autofs service
+  become: true
   ansible.builtin.systemd:
     name: autofs.service
     state: restarted
