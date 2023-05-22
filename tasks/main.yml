@@ -23,10 +23,10 @@
 
 - name: Setup mountpoint files
   become: true
-  ansible.builtin.template:
-    src: auto.template.j2
-    dest: /etc/autofs.{{box.name | default(ix)}}
-    mode: 0644
+  ansible.builtin.blockinfile:
+    path: /etc/autofs.{{ box.name | default(ix) }}
+    block: "{{ lookup('template', 'auto.template.j2') }}"
+    marker: "# {mark} Mountpoints for {{ name }}"
   loop: "{{ boxes }}"
   loop_control:
     loop_var: box
